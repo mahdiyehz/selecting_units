@@ -24,7 +24,7 @@ class Register:
             print(e)
 
         # defining students id
-        if self.role == '1':
+        if self.role == "1":
             try:
                 self.student_id()
             except Exception as e:
@@ -34,12 +34,16 @@ class Register:
         pw = self.repeat_password.encode()
         hashed_pw = hashlib.sha256(pw).hexdigest()
         dict_file = {'username': self.username, 'password': hashed_pw}
-        try:
-            if self.student_id():
-                filename = FileHandler('registered_users.csv')
-                filename.add_to_file(dict_file)
-        except Exception as e:
-            print(e)
+        if self.role != "1":
+            filename = FileHandler('registered_users.csv')
+            filename.add_to_file(dict_file)
+        else:
+            try:
+                if self.student_id():
+                    filename = FileHandler('registered_users.csv')
+                    filename.add_to_file(dict_file)
+            except Exception as e:
+                print(e)
 
     def repeat_pw_validation(self, repeat_password):
         if repeat_password != self.password:
@@ -56,5 +60,3 @@ class Register:
         else:
             self.student_number = str(self.entrance_year) + ''.join([f'{(randint(0, 9))}' for i in range(0, 6)])
             return self.student_number
-
-
