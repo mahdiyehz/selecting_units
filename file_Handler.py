@@ -1,6 +1,7 @@
 import csv
 from csv import DictWriter
 
+
 class FileHandler:
     def __init__(self, file_path='data.csv'):
         self.file_path = file_path
