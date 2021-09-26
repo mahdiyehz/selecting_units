@@ -53,5 +53,5 @@ class Register:
             raise Exception("entrance year format isn't true!")
         else:
             self.student_number = entrance_year + ''.join([f'{(randint(0, 9))}' for i in range(0, 6)])
-            print(self.student_number)
+            print(f'student number is: {self.student_number}')
             return self.student_number
