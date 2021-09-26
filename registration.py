@@ -14,7 +14,6 @@ class Register:
         self.role = input("Define your role:\n1. Student\n2. Professor\n3. Education director\n>>>? ")
         self.username = input("username: ")
         self.password = input("password: ")
-        self.entrance_year = None
         self.student_number = None
 
         # repeated password validity
@@ -25,25 +24,20 @@ class Register:
 
         # defining students id
         if self.role == "1":
-            try:
-                self.student_id()
-            except Exception as e:
-                print(e)
+            while True:
+                try:
+                    self.student_id()
+                except Exception as e:
+                    print(e)
+                    continue
+                break
 
         # hashing password and adding username and password into 'registered_users' file
         pw = self.repeat_password.encode()
         hashed_pw = hashlib.sha256(pw).hexdigest()
         dict_file = {'username': self.username, 'password': hashed_pw}
-        if self.role != "1":
-            filename = FileHandler('registered_users.csv')
-            filename.add_to_file(dict_file)
-        else:
-            try:
-                if self.student_id():
-                    filename = FileHandler('registered_users.csv')
-                    filename.add_to_file(dict_file)
-            except Exception as e:
-                print(e)
+        filename = FileHandler('registered_users.csv')
+        filename.add_to_file(dict_file)
 
     def repeat_pw_validation(self, repeat_password):
         if repeat_password != self.password:
@@ -53,10 +47,11 @@ class Register:
             return repeat_password
 
     def student_id(self):
-        self.entrance_year = input("Enter your entrance year to university (e.g. 97): ")
-        if len(self.entrance_year) != 2 or not isinstance(int(self.entrance_year), int):
+        entrance_year = str(input("Enter your entrance year to university (e.g. 97): "))
+        if len(entrance_year) != 2 or not isinstance(int(entrance_year), int):
             logging.error("entrance year format isn't true!")
             raise Exception("entrance year format isn't true!")
         else:
-            self.student_number = str(self.entrance_year) + ''.join([f'{(randint(0, 9))}' for i in range(0, 6)])
+            self.student_number = entrance_year + ''.join([f'{(randint(0, 9))}' for i in range(0, 6)])
+            print(self.student_number)
             return self.student_number
