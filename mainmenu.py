@@ -3,6 +3,12 @@ import logging
 from registration import Register
 from login import LoginToAccount
 
+logging.basicConfig(level=logging.INFO,
+                    filename='selecting_units.log',
+                    filemode='a',
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S')
+
 
 class MainMenu:
     """Display a menu and respond to choices when run."""
