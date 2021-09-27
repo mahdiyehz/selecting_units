@@ -17,10 +17,13 @@ class Register:
         self.student_number = None
 
         # repeated password validity
-        try:
-            self.repeat_password = self.repeat_pw_validation(input("repeat_password: "))
-        except Exception as e:
-            print(e)
+        while True:
+            try:
+                self.repeat_password = self.repeat_pw_validation(input("repeat_password: "))
+            except Exception as e:
+                print(e)
+                continue
+            break
 
         # defining students id
         if self.role == "1":
