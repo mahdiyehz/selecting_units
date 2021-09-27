@@ -3,7 +3,8 @@ import hashlib
 from file_Handler import FileHandler
 from random import randint
 
-logging.basicConfig(filename='selecting_units.log',
+logging.basicConfig(level=logging.INFO,
+                    filename='selecting_units.log',
                     filemode='a',
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S')
