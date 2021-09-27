@@ -3,8 +3,7 @@ import hashlib
 from file_Handler import FileHandler
 from random import randint
 
-logging.basicConfig(level=logging.INFO,
-                    filename='selecting_units.log',
+logging.basicConfig(filename='selecting_units.log',
                     filemode='a',
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S')
@@ -12,19 +11,35 @@ logging.basicConfig(level=logging.INFO,
 
 class Register:
     def __init__(self):
-        self.role = input("Define your role:\n1. Student\n2. Professor\n3. Education director\n>>>? ")
-        self.username = input("username: ")
-        self.password = input("password: ")
-        self.student_number = None
-
-        # repeated password validity
+        self.users_filename = FileHandler('registered_users.csv')
+        # role input
+        self.role = None
         while True:
             try:
-                self.repeat_password = self.repeat_pw_validation(input("repeat_password: "))
+                self.role_validation()
             except Exception as e:
                 print(e)
                 continue
             break
+
+        # username input
+        self.username = None
+        while True:
+            try:
+                self.username_validation()
+            except Exception as e:
+                print(e)
+                continue
+            break
+
+        self.password = input("password: ")
+        self.student_number = None
+
+        # repeated password validity
+        try:
+            self.repeat_password = self.repeat_pw_validation(input("repeat_password: "))
+        except Exception as e:
+            print(e)
 
         # defining students id
         if self.role == "1":
@@ -40,8 +55,25 @@ class Register:
         pw = self.repeat_password.encode()
         hashed_pw = hashlib.sha256(pw).hexdigest()
         dict_file = {'username': self.username, 'password': hashed_pw}
-        filename = FileHandler('registered_users.csv')
-        filename.add_to_file(dict_file)
+        self.users_filename.add_to_file(dict_file)
+        if self.role == "1":
+            self.student_file = FileHandler("students_info.csv")
+            self.student_file.add_to_file({'username': self.username, 'password': hashed_pw, 'student id': self.student_number})
+
+    def role_validation(self):
+        self.role = input("Define your role:\n1. Student\n2. Professor\n3. Education director\n>>>? ")
+        if self.role not in ["1", "2", "3"]:
+            logging.warning("Invalid role!")
+            raise Exception("Invalid role!just enter a number between 1-3")
+        else:
+            return self.role
+
+    def username_validation(self):
+        self.username = input("username: ")
+        for user in self.users_filename.read_file():
+            if self.username == user['username']:
+                raise Exception("this username already exists! enter another username")
+
 
     def repeat_pw_validation(self, repeat_password):
         if repeat_password != self.password:
@@ -57,5 +89,9 @@ class Register:
             raise Exception("entrance year format isn't true!")
         else:
             self.student_number = entrance_year + ''.join([f'{(randint(0, 9))}' for i in range(0, 6)])
-            print(f'student number is: {self.student_number}')
+            print(self.student_number)
             return self.student_number
+
+
+
+
