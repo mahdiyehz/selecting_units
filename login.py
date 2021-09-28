@@ -61,10 +61,13 @@ class LoginToAccount:
             raise Exception("this account dose not exist!")
 
     def log_in(self):
+        student_find = False
         for user in self.read_student_file:
             if self.input_user_name == user['username']:
                 print("Student")
                 StudentMenu().run_student()
-            else:
-                print("Education Director")
-                EducationDirectorMenu().run_director()
+                student_find = True
+
+        if not student_find:
+            print("Education Director")
+            EducationDirectorMenu().run_director()
