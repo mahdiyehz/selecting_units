@@ -128,3 +128,4 @@ _*Education Admin Menu*_
             else:
                 print(f'{choice}is not a valid choice!')
                 logging.warning("invalid choice")
+                
