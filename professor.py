@@ -33,7 +33,7 @@ class Professor(User):
         input_course_name = input("Enter course name: ")
         selected_course = Course.courses_file.find_row_item("course name", input_course_name)
         if selected_course:
-            if selected_course["professor name"] is None:
+            if selected_course["professor name"] == "":
                 updated_course = {"course name": selected_course["course name"],
                                   "professor name": self.username,
                                   "number of units": selected_course["unit number"]}
